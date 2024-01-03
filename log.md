@@ -11,3 +11,8 @@
 
 ## Tues 1/2/24
 * Ch. 2 Lab: Introduction to AWS Identity and Access Management (IAM)
+
+## Wed 1/3/24
+* Ch 2:
+  * Testing IAM Permissions
+  * IAM101 - Summary

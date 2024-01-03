@@ -63,3 +63,38 @@ IAM Demo
 Lab: 'Introduction to AWS Identity and Access Management (IAM)'
 * Explicit 'Deny' overrides any explicit 'Allow'. By default, all resources are implicit 'Deny'.
 * __least-privilege security__ - an IAM security best practice in which you only allow users the bare minimum permissions needed to do their job function(s).
+
+Testing IAM Permissions
+* __IAM Policy Simulator__ - test the effects of IAM policies before committing them to production to validate that the policies work as expected and don't allow or deny the wrong services.
+* You can also test existing users and the policies attached to them. This is helpful in troubleshooting an issue you suspect may be IAM related.
+* https://policysim.aws.amazon.com/
+
+IAM101 - Summary
+* IAM consists of users, groups, and roles
+* Example IAM Policy Document:
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "*",
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+* You can allow or deny read, allow, update, etc actions on resources.
+* IAM is universal, not regional.
+  * This means anything you set up within IAM can be used within any region.
+* The __root account__ is created when you first set up your AWS account. The account has complete admin access. 
+  * For day to day activities, it's recommended that you use an IAM user account rather than the root account.
+* New users have no permissions when first created, i.e. they start with implicit deny for all actions on all resources.
+* IAM Access Keys - exam tips
+  * __access key__ - new users are assigned an access key ID and a secret access key when their accounts are created.
+  * These keys are not the same as a password; you cannot use them to log into the AWS management console. Rather, these allow programmatic access to AWS via the APIs and the command line.
+  * You can only view the access key ID and secret access key once. If lost, you need to regenerate them. So be sure to save these in a secure location.
+  * Always set up Multi-Factor Authentication (MFA) on your root account.
+  * Password rotation - you can create and customize your own password rotation policies.
