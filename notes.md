@@ -59,3 +59,7 @@ IAM Demo
   * Allows organizations to reflect their own password policies for their AWS users.
 
 [continue at 9:57]
+
+Lab: 'Introduction to AWS Identity and Access Management (IAM)'
+* Explicit 'Deny' overrides any explicit 'Allow'. By default, all resources are implicit 'Deny'.
+* __least-privilege security__ - an IAM security best practice in which you only allow users the bare minimum permissions needed to do their job function(s).

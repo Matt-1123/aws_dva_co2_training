@@ -8,3 +8,6 @@
 * Lecture notes
   * Chapter 2:
     * IAM Demo
+
+## Tues 1/2/24
+* Ch. 2 Lab: Introduction to AWS Identity and Access Management (IAM)
