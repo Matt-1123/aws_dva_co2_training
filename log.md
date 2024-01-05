@@ -21,3 +21,4 @@
 * Lecture notes
   * Ch. 3 - Beginner's Guide to EC2
     * 3.1 Introducing EC2
+    * 3.4 Launching an EC2 Instance - Demo
