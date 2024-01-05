@@ -16,3 +16,8 @@
 * Ch 2:
   * Testing IAM Permissions
   * IAM101 - Summary
+
+## Fri 1/5/24
+* Lecture notes
+  * Ch. 3 - Beginner's Guide to EC2
+    * 3.1 Introducing EC2
