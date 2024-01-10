@@ -36,8 +36,8 @@ IAM 101
 * Users, Groups, and Roles
   * __Users__: An IAM user is an identity with long-term credentials that is used to interact with AWS in an account.
   * __Groups__: a collection of users under one set of permissions
-  * __Roles__: you create roles and can then assign them to users, applications, and services to give access to AWS resources
-* __IAM Policy__: a document that defines one or more permissions; an IAM policy can be attached to a user, group, and/or role
+  * __Roles__: you create roles and can then assign them to users, applications, and services to give access to AWS resources; example: S3 bucket access role, given to an EC2 instance to access media files.
+* __IAM Policy__: a document that defines one or more permissions; an IAM policy can be attached to a user, group, and/or role (best practice to attach to groups only)
 
 IAM Demo
 * __MFA__
@@ -57,9 +57,18 @@ IAM Demo
 * Password policy
   * You can change the minimum password length, characters needed, etc. from Account Settings
   * Allows organizations to reflect their own password policies for their AWS users.
-
-[continue at 9:57]
-
+* Create a Role
+  * Step 1. Select trusted entity
+    * Trusted entity types:
+      * AWS Service - Allow AWS services like EC2, Lambda, or others to perform actions in this account.
+      * AWS Account - Allow entities in other AWS accounts belonging to you or a 3rd party to perform actions in this account.
+      * Web identity - Allows users federated by the specified external web identity provider to assume this role to perform actions in this account.
+      * SAML 2.0 federation - Allow users federated with SAML 2.0 from a corporate directory to perform actions in this account.
+      * Custom trust policy - Create a custom trust policy to enable others to perform actions in this account.
+    * In this demo, choose an AWS Service as the trusted entity
+  * Step 2. Select permissions
+    * In this demo, delect AmazonS3FullAccess
+  * Step 3. Create a role name, e.g. 'EC2S3FullAccess', and description, e.g. 'Allows EC2 instances to call AWS services on your behalf.'
 Lab: 'Introduction to AWS Identity and Access Management (IAM)'
 * Explicit 'Deny' overrides any explicit 'Allow'. By default, all resources are implicit 'Deny'.
 * __least-privilege security__ - an IAM security best practice in which you only allow users the bare minimum permissions needed to do their job function(s).
