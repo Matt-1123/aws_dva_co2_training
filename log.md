@@ -22,3 +22,13 @@
   * Ch. 3 - Beginner's Guide to EC2
     * 3.1 Introducing EC2
     * 3.4 Launching an EC2 Instance - Demo
+
+## Wed 1/10/24
+* Lecture notes
+  * Ch. 2:
+    * IAM Demo (add to notes)
+* IAM Quiz: score 8/8
+
+## Wed 1/17/24
+* Lecture notes
+  * Ch. 3.5 'How to Use Putty Demo (Windows Users Only)' 

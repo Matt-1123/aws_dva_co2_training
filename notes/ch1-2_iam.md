@@ -69,6 +69,7 @@ IAM Demo
   * Step 2. Select permissions
     * In this demo, delect AmazonS3FullAccess
   * Step 3. Create a role name, e.g. 'EC2S3FullAccess', and description, e.g. 'Allows EC2 instances to call AWS services on your behalf.'
+  * IAM roles allow applications to securely make API requests from EC2 instances, without requiring you to manage the security credentials that the applications use.
 Lab: 'Introduction to AWS Identity and Access Management (IAM)'
 * Explicit 'Deny' overrides any explicit 'Allow'. By default, all resources are implicit 'Deny'.
 * __least-privilege security__ - an IAM security best practice in which you only allow users the bare minimum permissions needed to do their job function(s).
