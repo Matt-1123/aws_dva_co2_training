@@ -32,3 +32,6 @@
 ## Wed 1/17/24
 * Lecture notes
   * Ch. 3.5 'How to Use Putty Demo (Windows Users Only)' 
+
+## Tues 1/23/24
+* Ch. 5.3 Lab: 'Creating a Lambda Function Using the AWS Console'
