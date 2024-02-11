@@ -10,7 +10,8 @@
     * IAM Demo
 
 ## Tues 1/2/24
-* Ch. 2 Lab: Introduction to AWS Identity and Access Management (IAM)
+Lab
+  * Ch. 2 Lab: Introduction to AWS Identity and Access Management (IAM)
 
 ## Wed 1/3/24
 * Ch 2:
@@ -34,4 +35,9 @@
   * Ch. 3.5 'How to Use Putty Demo (Windows Users Only)' 
 
 ## Tues 1/23/24
-* Ch. 5.3 Lab: 'Creating a Lambda Function Using the AWS Console'
+Lab
+  * Ch. 5.3 Lab: 'Creating a Lambda Function Using the AWS Console'
+
+## Sat 2/10/24
+* Lecture notes
+  * Ch. 3.6 Using EC2 instance Connect - Demo
