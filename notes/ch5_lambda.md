@@ -1,3 +1,32 @@
+## 5.1 - Serverless 101
+* Going serverless enables you to build scalable applications quickly without managing any servers
+* What to know: 
+  * No need for server management
+  * Automatic continuous scaling (as needed)
+  * Only pay when your code executes (including free-tier options)
+    * Serverless applications are __event-driven__ and you are only charged for when your code is executed
+  * Independent: each event will trigger a single function
+* Examples of AWS serverless technologies: 
+  * Lambda: enables you to run code as functions without provisioning any servers. 
+  * SQS (Simple Queue Service) - A message queuing service that allows you to decouple and scale your applications. 
+    * __decoupled application__ - "In microservice architectures, applications are built and deployed as highly decoupled, focussed services. A decoupled application architecture allows each component to perform its tasks independently - it allows components to remain completely autonomous and unaware of each other. A change in one service shouldn't require a change in the other services. It is the process of separating services so that their functionality is more self-contained."
+  * SNS (Simple Notification Service) - A messaging service for sending text messages, mobile notifications, and emails.
+  * API Gateway - allows you to create, publish, and secure APIs at any scale.
+  * DynamoDB - fully managed NoSQl database
+  * S3 - Object storage and web hosting
+* Serverless website example: When a user enters the address, their browser sends a request to the API Gateway and your request is then routed to the appropriate Lambda function. Each lambda function handles different functionalities of the website, e.g. discussion forums, playing videos (from S3). It can also use 3P services, such as credit card payments, other non-AWS databases, etc.
+
+## 5.2 - Introducing Lambda
+* __Serverless Compute__
+  * Run your code in AWS without provisioning any servers.
+  * Lambda takes care of everything required to run your code, including the runtime environment.
+* Supported languages: Node.js, Python, Java, C#, Ruby, PowerShell, and Go
+* Pricing is based on the number of requests, their duration (milliseconds), and the amount of memory (GB-seconds) used by your Lambda function. 
+* Event-driven architecture:
+  * event-driven - Lambda functions can be automatically triggered by other AWS services, or called directly from any web or mobile app.
+  * triggered by events - these events could be things like changes to data in an S3 bucket, or a call from the Alexa cloud.
+  * triggered by user requests - you can use API Gateway to configure an HTTP endpoint, allowing you to trigger your function at any time using an HTTP request.
+
 ## 5.3 Lab - Creating a Lambda Function Using the AWS Console
 Learning objectives
 1. Author Node.js Lambda Function in the AWS Console. 
