@@ -25,7 +25,7 @@
 * Event-driven architecture:
   * event-driven - Lambda functions can be automatically triggered by other AWS services, or called directly from any web or mobile app.
   * triggered by events - these events could be things like changes to data in an S3 bucket, or a call from the Alexa cloud.
-  * triggered by user requests - you can use API Gateway to configure an HTTP endpoint, allowing you to trigger your function at any time using an HTTP request.
+  * triggered by user requests - you can use the API Gateway to configure an HTTP endpoint, allowing you to trigger your function at any time using an HTTP request.
 
 ## 5.3 Lab - Creating a Lambda Function Using the AWS Console
 Learning objectives
@@ -39,7 +39,6 @@ Learning objectives
 Lambda Permissions
 * __execution role__: "Choose a role that defines the permissions of your function. To create a custom role, go to the IAM console" ... "Lambda will create an execution role named '[lambda name]-role-[random string]', with permission to upload logs to Amazon CloudWatch Logs."
 * __lambda test event__: "A test event is a JSON object that mocks the structure of requests emitted by AWS services to invoke a Lambda function. Use it to see the function’s invocation result."
-* __Lambda CloudWatch metrics__: "Lambda sends runtime metrics for your functions to Amazon CloudWatch. The metrics shown are an aggregate view of all function runtime activity. To view metrics for the unqualified or $LATEST resource, choose Filter by. To view metrics for a specific function version or alias, choose Aliases or Versions, select the alias or version, and then choose Monitor." 
 * __Lambda CloudWatch logs__: "Lambda sends runtime metrics for your functions to Amazon CloudWatch. The metrics shown are an aggregate view of all function runtime activity. To view metrics for the unqualified or $LATEST resource, choose Filter by. To view metrics for a specific function version or alias, choose Aliases or Versions, select the alias or version, and then choose Monitor."
   * Monitor > View CloudWatch Logs (This will open a new tab, taking you to the CloudWatch Managment Console.)
   * You should see the START and END Request Id, as well as the Billed Duration.
@@ -72,3 +71,105 @@ Lambda Permissions
   };
   ```
 
+## 5.4 - API Gateway
+* API Gateway is a service which allows you to publish, maintain, and monitor APIs at any scale
+* It provides a single endpoint for all client traffic interacting with the backend of your application.
+* How it works: a user connects with a client device, e.g. web broswer. They make a request to the AWS environment, and the request hits the API Gateway. API Gateway can then forward the request to different services, such as Lambda.
+* What is it? API Gateway allows you to connect to applications running on Lambda, EC2, or Elastic Beanstalk and services like DynamoDB and Kinesis.
+* Supports multiple endpoints and targets, allows you to send each API endpoint to a different target.
+* Supports multiple versions, e.g. you can have a different version of your API for production, testing, and development.
+* An API is like a front door for applications to access data, business logic, or functionality from your backend services, e.g. applications running on Lambda or EC2.
+* Supported API types: 
+  * RESTful APIs: optimized for stateless, serverless workloads
+  * Websocket APIs: for real-time, two-way, stateful communication, e.g. chat apps
+* __RESTful API__
+  * API Gateway supports both types of RESTful APIs: HTTP APIs and REST APIs.
+  * REST = Representational State Transfer
+  * Optimized for serverless and web applications
+  * Stateless (nothing is persisted in the application or API itself)
+  * Supports JSON (JavaScript Object Notation), a notation language that uses key-value pairs.
+* Serverless
+* Integrates with CloudWatch, so it logs all API calls, latencies, and error rates.
+* Supports throttling: helps you manage traffic with throttling so that backend operations can withstand traffic spikes and denial of service attacks.
+  * "A denial-of-service (DoS) attack is a type of cyber attack in which a malicious actor aims to render a computer or other device unavailable to its intended users by interrupting the device's normal functioning."
+* Alias vs. version
+
+
+## 5.5 - Building a Serverless Website - Demo
+* With API Gateway, you can add an API to your Lambda function to create an HTTP endpoint that invokes your function. 
+* Lambda => Add trigger => API Gateway
+* You can optionally configure security mechanisms (with JWT Authorizer) for your API endpoint, or just leave it open.
+* To allow the webpage to successfully call the API, under Lambda => Add trigger => API Gateway => Additional Settings, check 'Cross-origin resource sharing (CORS)'. This is needed when your API isn't hosted on the same domain as your webpage. This option enables cross-origin resource sharing from any domain by adding the `Access-Control-Allow-Origin` header to all responses.
+* Add an S3 bucket
+  * Object ownership: Control ownership of objects written to this bucket from other AWS accounts and the use of access control lists (ACLs). Object ownership determines who can specify access to objects. Options:
+    1. ACLs disabled (recommended) - all objects in this bucket are owned by this account. Access to this bucket and its objects is specified using only policies. i.e. not suitable for public webpages.
+    2. ACLs enabled - Objects in this bucket can be owned by other AWS accounts. Access to this bucket and its objects can be specified using ACLs (access control lists). 
+  * In the bucket's Properties, enable static website hosting
+    * docs: https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html?icmpid=docs_amazons3_console
+* Note on Static website hosting with S3, from docs:
+  > You can use the AWS Amplify Console to host a single-page web app. The AWS Amplify Console supports single-page apps built with single-page app frameworks (for example, React JS, Vue JS, Angular JS, and Nuxt) and static site generators (for example, Gatsby JS, React-static, Jekyll, and Hugo). For more information, see Getting Started in the AWS Amplify Console User Guide.
+  >
+  >Amazon S3 website endpoints do not support HTTPS. If you want to use HTTPS, you can use Amazon CloudFront to serve a static website hosted on Amazon S3. For more information, see How do I use CloudFront to serve HTTPS requests for my Amazon S3 bucket?
+  >To use HTTPS with a custom domain, see Configuring a static website using a custom domain registered with Route 53.
+* Lambda function aliases:
+  * "You can create aliases for your Lambda function. A Lambda alias is a pointer to a function version that you can update. The function's users can access the function version using the alias Amazon Resource Name (ARN). When you deploy a new version, you can update the alias to use the new version, or split traffic between two versions." https://docs.aws.amazon.com/lambda/latest/dg/configuration-aliases.html
+* An __unqualified function ARN__ (no version specified at the end of the ARN string) defaults to __$LATEST__. 
+* ** point aliases to versions **
+* Lambda assigns the function URL to the $LATEST unpublished version of your function. You cannot assign a function URL to any other function version, but you can assign a function URL to any function alias.
+* Each version, including $LATEST, has its own function URL. 
+* Exam tips
+  * $LATEST is always the last version of code you uploaded to Lambda
+  * Versioning and aliases: Use Lambda versioning and aliases to point your applications to a specific version if you don't want to use $LATEST.
+  * Example ARNs:
+    * arn:aws:lambda:us-east-1:123456789012:function:mylambda:Prod
+    * arn:aws:lambda:us-east-1:123456789012:function:mylambda:$LATEST
+    * arn:aws:lambda:us-east-1:123456789012:function:mylambdA (defaults to $LATEST)
+
+## 5.7 Lambda Concurrent Executions Limit
+* Exam tips
+  * 1000 concurrent executions per second (default limit)
+  * Hitting the limit results in a 429 HTTP status code
+  * The remedy is to get the limit raised by AWS Support
+  * Reserved concurrency guarantees a set number of concurrent execututions are always available to a critical function.
+* Don't need to memorize specifics
+* Just need to be aware that there is a concurrent execution limit for Lambda
+* This is a safety feature to limit the number of concurrent executions across all functions in a given region per account.
+* Default is 1000 concurrent executions per region. 
+* Surpassing the limit results in a `TooManyRequestsException` error and HTTP status code of 429 (Request throughput limit exceeded)
+* You can request an increase by contacting AWS support.
+  * For example A Cloud Guru has a 6.5 million invocations per day limit for their one region, us-east-1
+* __Reserved concurrency__ guarantees that a set number of executions which will always be available for your critical function. However, this also acts as a limit (e.g. setting a reserved concurrency of 500 means that function can never surpass 500 concurrent executions)
+
+## 5.8 Lambda and VPC Access
+* Enabling Lambda to access your VPC Resources
+  * Some use cases require Lambda to access resources which are inside a private VPC
+  * __Amazon Virtual Private Cloud (VPC)__ is a service that lets you launch AWS resources in a logically isolated virtual network that you define.
+  * e.g. read or write to an RDS database, or shut down an EC2 instance in response to a security alert.
+* To enable Lambda to access VPC resources, you need to allow the function to connect to the private subnet.
+* Lambda requires the following VPC Configuration information to connect to the VPC:
+  * Private subnet ID
+  * Security group ID (with required access)
+  * Lambda uses this info to set up ENIs using an available IP address from your private subnet
+* You add VPC information to your Lambda function config using the vpc-config parameter, e.g.:
+  `aws lambda update-function-configuration --function-name my-function --vpc-config SubnetIds=subnet-1122aabb,SecurityGroupIds=sg-51530134`
+* Exam tips
+  * It is possible to enable Lambda to access resources which are inside a private VPC.
+  * Provide VPC config to the function - private subnet ID, security group ID
+  * Lambda uses the VPC information to set up ENIs using an IP from the private subnet CIDR range.
+  * The security group then allows your function to access resources in VPC.
+
+## 5.9 Example Serverless Architectures
+* Characteristics of Event-Driven Architecture
+  1. Asynchronous - events and asynchronous communication are used to loosely couple application components. An event or message might trigger an action, but no response is expected or required for the next step to occur.
+  2. Loosely coupled - services and components operate and scale independently of each other.
+  3. Single-purpose functions - stateless functions performing a short-lived task
+* Event source - e.g. object uploaded to S3, item in a table modified
+* Event destination
+* Event Router - e.g. EventBridge AWS service; coordinates everything between the event source and destination, e.g. if an event does more than just trigger a single Lambda function, it may be complex enough to need an event router.
+* Example: Image processing application
+  * 'UploadedImages' S3 bucket -> Image Processing Lambda function -> 'ProcessedImages' S3 bucket AND DynamoDB table for image metadata <- Processed images served by CloudFront
+* Exam tips: 
+  * Event driven and asynchronous: an event or message may trigger an action, but no response is expected or required
+  * Building blocks - think of AWS services as building blocks that can be integrated together to create an application
+  * Loosely coupled - SQS allows you to queue messages. EventBridge helps you handle events and route them to application components.
+  * Flexibility and Scalability - services and components operate and scale independently of each other.
