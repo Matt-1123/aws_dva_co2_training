@@ -163,13 +163,70 @@ Lambda Permissions
   1. Asynchronous - events and asynchronous communication are used to loosely couple application components. An event or message might trigger an action, but no response is expected or required for the next step to occur.
   2. Loosely coupled - services and components operate and scale independently of each other.
   3. Single-purpose functions - stateless functions performing a short-lived task
-* Event source - e.g. object uploaded to S3, item in a table modified
-* Event destination
-* Event Router - e.g. EventBridge AWS service; coordinates everything between the event source and destination, e.g. if an event does more than just trigger a single Lambda function, it may be complex enough to need an event router.
-* Example: Image processing application
-  * 'UploadedImages' S3 bucket -> Image Processing Lambda function -> 'ProcessedImages' S3 bucket AND DynamoDB table for image metadata <- Processed images served by CloudFront
+* __Event source__ - e.g. object uploaded to S3, item in a table modified
+* __Event destination__
+* __Event Router__ - e.g. __EventBridge__ AWS service; coordinates everything between the event source and destination, e.g. if an event does more than just trigger a single Lambda function, it may be complex enough to need an event router.
+  * Example: Image processing application
+    * 'UploadedImages' S3 bucket -> Image Processing Lambda function -> 'ProcessedImages' S3 bucket AND DynamoDB table for image metadata <- Processed images served by CloudFront
 * Exam tips: 
   * Event driven and asynchronous: an event or message may trigger an action, but no response is expected or required
   * Building blocks - think of AWS services as building blocks that can be integrated together to create an application
   * Loosely coupled - SQS allows you to queue messages. EventBridge helps you handle events and route them to application components.
   * Flexibility and Scalability - services and components operate and scale independently of each other.
+
+## 5.10 Step Functions - Demo
+* __Step Functions__ allow you to visualize and test your serverless applications. Step Functions provide a graphical console to arrange and visualize the components of your application as a series of steps. This makes it simple to build and run multistep applications. Step Functions automatically trigger and track each step, and retries when there are errors, so your application executes in order and as expected. Step Functions log the state of each step, so when things do go wrong, you can diagnose and debug problems quickly
+* __Sequential Steps__, e.g.  
+  (Start) → [Upload RAW File] → [Delete Raw File] → (End)
+* __Branching Steps__ (choice of path), e.g.
+* __Parallel steps__
+* Great way to visualize your serverless application
+
+## 5.11 Building a Serverless Application Using Step Functions, API Gateway, Lambda, and S3 in AWS
+* Amazon SES > Configuration: Identities > Create Identity
+    >An identity is a domain, subdomain, or email address you use to send email through Amazon SES. Identity verification at the domain level extends to all email addresses under one verified domain identity.
+* [optional - not used in lab] __Custom MAIL FROM domain__: Messages sent through Amazon SES will be marked as originating from your domain instead of a subdomain of amazon.com.
+  ### Results of Lab
+  * Attempt 4/29/24: completed all staps, but the static website url hosted on S3 failed to load, with the error, "Yikes! There was an error: TypeError: Failed to fetch"
+
+* Instead of Cloud Playground, I will be attempting this lab in my own account. I'll also be using Node JS instead of Python.
+
+Notes
+* Lambda handlers:
+  ```
+  export const handler = async (event, context) => {
+    console.log("EVENT: \n" + JSON.stringify(event, null, 2));
+    return context.logStreamName;
+  };
+  ```
+  >When you configure a function, the value of the handler setting is the file name and the name of the exported handler method, separated by a dot. The default in the console and for examples in this guide is index.handler. This indicates the handler method that's exported from the index.js file.
+  >The runtime passes arguments to the handler method. The first argument is the event object, which contains information from the invoker. The invoker passes this information as a JSON-formatted string when it calls Invoke, and the runtime converts it to an object. When an AWS service invokes your function, the event structure varies by service.
+  >The second argument is the context object, which contains information about the invocation, function, and execution environment. In the preceding example, the function gets the name of the log stream from the context object and returns it to the invoker.
+  >You can also use a callback argument, which is a function that you can call in non-async handlers to send a response. We recommend that you use async/await instead of callbacks. Async/await provides improved readability, error handling, and efficiency.
+  * More on callbacks in Lambda: https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html#nodejs-handler-callback
+* __Node.js event loop__ - 
+  >When you use callbacks in your handler, the function continues to execute until the event loop is empty or the function times out. The response isn't sent to the invoker until all event loop tasks are finished. If the function times out, an error is returned instead. You can configure the runtime to send the response immediately by setting context.callbackWaitsForEmptyEventLoop to false.
+    * https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html#nodejs-handler-callback
+  >The event loop is what allows Node.js to perform non-blocking I/O operations — despite the fact that JavaScript is single-threaded — by offloading operations to the system kernel whenever possible.   
+    * https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick
+
+* Difference between require and import in JS:
+  * CommonJS uses require and module.exports
+  * ES6 uses import and export
+  * You can't selectively load only the pieces you need with require but with import, you can selectively load only the pieces you need, which can save memory.
+    e.g. `import {a} from 'b'`
+
+* Loading is synchronous(step by step) for require on the other hand import can be asynchronous(without waiting for previous import) so it can perform a little better than require.
+
+* S3 Permissions: Access Control List (ACL)
+  >A majority of modern use cases in Amazon S3 no longer require the use of ACLs. We recommend that you keep ACLs disabled, except in unusual circumstances where you need to control access for each object individually.
+    * https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteAccessPermissionsReqd.html#object-acl
+
+* REST vs HTTP vs WebSocket APIs: 
+  * "REST APIs support more features than HTTP APIs, while HTTP APIs are designed with minimal features so that they can be offered at a lower price. Choose REST APIs if you need features such as API keys, per-client throttling, request validation, AWS WAF integration, or private API endpoints."
+  * "An HTTP API is based on traditional web principles and uses the HTTP protocol for communication. A REST API, on the other hand, is based on Representational State Transfer principles and uses web resources for communication. As a result, REST APIs are more flexible and scalable than HTTP APIs."
+  * "WebSocket APIs maintain persistent connections with clients for full-duplex communication"
+    * "A duplex communication system is a point-to-point system composed of two or more connected parties or devices that can communicate with one another in both directions." (wikipedia)
+
+* How API Gateway and Lambda communicate:
+  * "The HTTP API provides an HTTP endpoint for your Lambda function. API Gateway routes requests to your Lambda function, and then returns the function's response to clients."

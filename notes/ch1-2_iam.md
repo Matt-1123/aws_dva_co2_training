@@ -1,3 +1,6 @@
+https://aws.amazon.com/certification/certified-developer-associate/
+"AWS Certified Developer - Associate showcases knowledge and understanding of core AWS services, uses, and basic AWS architecture best practices, and proficiency in developing, deploying, and debugging cloud-based applications by using AWS. Preparing for and attaining this certification gives certified individuals more confidence and credibility. Organizations with AWS Certified developers have the assurance of having the right talent to give them a competitive advantage and ensure stakeholder and customer satisfaction."
+
 ## Ch 1: Introduction
 DVA-CO2 exam
 Intermediate course
@@ -29,6 +32,10 @@ Course Updates
 * Deemed current as of June 2023.
 
 ## Ch. 2: Beginner's Guide to IAM
+
+### Glossary
+__Access key__ - Access keys are long-term credentials for an IAM user or the AWS account root user. You can use access keys to sign programmatic requests to the AWS CLI or AWS API (directly or using the AWS SDK). They consist of two parts: an **access key ID** (for example, AKIAIOSFODNN7EXAMPLE) and a **secret access key** (for example, wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY). You must use both the access key ID and secret access key together to authenticate your requests.
+
 IAM 101
 * Identity and access management
 * Manage users and their level of access to the AWS console.
