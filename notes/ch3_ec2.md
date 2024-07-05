@@ -14,13 +14,39 @@
   * No wasted capacity (grow and shrink when you need). Wasted capacity is inherent in physical servers because when first set up they are often overspecified. But with EC2 as the demands on your application change, you can grow and shrink your infrastructure to suit the requirements of our application. 
 
 ## 3.4 Launching an EC2 Instance - Demo
+* __Amazon Machine Image (AMI)__ - An Amazon Machine Image (AMI) is an image provided by AWS that provides the information required to launch an instance. 
+  * An AMI includes the following:
+    * One or more Amazon Elastic Block Store (Amazon EBS) snapshots, or, for instance-store-backed AMIs, a template for the root volume of the instance (for example, an operating system, an application server, and applications).
+    * Launch permissions that control which AWS accounts can use the AMI to launch instances.
+    * A block device mapping that specifies the volumes to attach to the instance when it's launched.
 * __Key Pair__ (login) - You can use a key pair to securely connect to your instance. Ensure that you have access to the selected key pair before you launch the instance.
   * You can use a key pair to securely connect to your instance. Ensure that you have access to the selected key pair before you launch the instance.
   * Controls who can log into your server. Anyone with the private key can log in.
   * When prompted, store the private key in a secure and accessible location on your computer. You will need it later to connect to your instance. 
 * Network settings
   * defailt is __VPC__ (covered later; for now just know it's like your own virtual data center in the cloud that is private to you)
-[continue at 5:00]
+* __security group__ - A set of firewall rules that controls the traffic for your instance. 
+  * Default is SSH on port 22. SSH allows you to have a command line session on the Linux server (which is the OS chosen in the AMI)
+  * For a web server, you'll also need an HTTP security group. Set to port 80 and source type should be 'Anywhere', because web servers need to be public.
+* Configure storage - by default you get 8 GB of root volume. This is where the OS of your instance is going to be installed.
+  * Most applications just need a 'General purpose SSD' (gp2) EBS volume.
+  * High performance applications which need add'l IOPS should use a 'Provisioned IOPS SSD' volume instead.
+* Another setting is 'Termination protection'. This provided added protection by requiring you to disable this setting before you're able to terminate your instance. 
+  * Useful for preventing a production system from accidentally being terminated.
+CloudWatch monitoring - defaule is 5 min intervals, paid version is 1 min intervals.
+* __Placement group__
+  * Good 
+  * To meet the needs of your workload, you can launch a group of interdependent EC2 instances into a placement group to influence their placement. Depending on the type of workload, you can create a placement group using one of the following placement strategies:
+    * Cluster – Packs instances close together inside an Availability Zone. This strategy enables workloads to achieve the low-latency network performance necessary for tightly-coupled node-to-node communication that is typical of high-performance computing (HPC) applications.
+
+    * Partition – Spreads your instances across logical partitions such that groups of instances in one partition do not share the underlying hardware with groups of instances in different partitions. This strategy is typically used by large distributed and replicated workloads, such as Hadoop, Cassandra, and Kafka.
+
+    * Spread – Strictly places a small group of instances across distinct underlying hardware to reduce correlated failures.
+
+  * Placement groups are optional. If you don't launch your instances into a placement group, EC2 tries to place the instances in such a way that all of your instances are spread out across the underlying hardware to minimize correlated failures.
+  * There is no charge for creating a placement group.
+* __user data__ - commands you can run when the system first boots up. You add these commands in this text box as a bootstrap script.
+
 
 ## 3.5 
 https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html
